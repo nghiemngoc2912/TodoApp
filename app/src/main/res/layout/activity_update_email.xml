@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
-        android:text="User Profile"
+        android:text="Update Email"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
@@ -79,23 +79,16 @@
         android:id="@+id/buttonUpdateEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="48dp"
         android:text="Update Email"
-        app:layout_constraintStart_toStartOf="@+id/email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email" />
-
-    <Button
-        android:id="@+id/buttonChangePassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change Password"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonUpdateEmail"
-        app:layout_constraintEnd_toEndOf="@+id/email" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="top"
-        app:constraint_referenced_ids="buttonChangePassword,buttonUpdateEmail" />
+        app:constraint_referenced_ids="buttonUpdateEmail" />
 </androidx.constraintlayout.widget.ConstraintLayout>

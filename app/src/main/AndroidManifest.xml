@@ -13,16 +13,20 @@
         android:theme="@style/Theme.TodoApp"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
+            android:name=".controller.user.ResetPasswordActivity"
+            android:exported="false" />
         <activity
-            android:name=".RunInterfaceTest"
+            android:name=".controller.user.VerifyOtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.user.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.user.LoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".controller.user.SignupActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,6 +34,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

@@ -1,6 +1,6 @@
 package com.example.todoapp.model;
 
-public class ApiResponse {
+public class ApiResponseDTO {
     private boolean success;
     private String message;
     private Object data;

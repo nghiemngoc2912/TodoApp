@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.todoapp.R;
 import com.example.todoapp.api.RetrofitClient;
-import com.example.todoapp.model.ApiResponse;
-import com.example.todoapp.model.ResetPasswordRequest;
+import com.example.todoapp.model.ApiResponseDTO;
+import com.example.todoapp.model.ResetPasswordRequestDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,24 +74,24 @@ public class ResetPasswordActivity extends AppCompatActivity {
         resetPasswordButton.setEnabled(false);
         resetPasswordButton.setText("Resetting...");
 
-        ResetPasswordRequest request = new ResetPasswordRequest(email, newPass, otp);
+        ResetPasswordRequestDTO request = new ResetPasswordRequestDTO(email, newPass, otp);
 
-        RetrofitClient.getApiService().resetPassword(request).enqueue(new Callback<ApiResponse>() {
+        RetrofitClient.getApiService().resetPassword(request).enqueue(new Callback<ApiResponseDTO>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+            public void onResponse(Call<ApiResponseDTO> call, Response<ApiResponseDTO> response) {
                 resetPasswordButton.setEnabled(true);
                 resetPasswordButton.setText("Reset Password");
 
                 if (response.isSuccessful() && response.body() != null) {
-                    ApiResponse apiResponse = response.body();
-                    if (apiResponse.isSuccess()) {
+                    ApiResponseDTO apiResponseDTO = response.body();
+                    if (apiResponseDTO.isSuccess()) {
                         Toast.makeText(ResetPasswordActivity.this, "Password reset successfully", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(ResetPasswordActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(ResetPasswordActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ResetPasswordActivity.this, apiResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(ResetPasswordActivity.this, "Password reset failed", Toast.LENGTH_SHORT).show();
@@ -99,7 +99,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponseDTO> call, Throwable t) {
                 resetPasswordButton.setEnabled(true);
                 resetPasswordButton.setText("Reset Password");
                 Toast.makeText(ResetPasswordActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();

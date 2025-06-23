@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.todoapp.MainActivity;
 import com.example.todoapp.R;
 import com.example.todoapp.api.RetrofitClient;
-import com.example.todoapp.model.ApiResponse;
-import com.example.todoapp.model.LoginRequest;
+import com.example.todoapp.model.ApiResponseDTO;
+import com.example.todoapp.model.LoginRequestDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -68,19 +68,19 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setEnabled(false);
         loginButton.setText("Logging in...");
 
-        LoginRequest request = new LoginRequest(username, password);
+        LoginRequestDTO request = new LoginRequestDTO(username, password);
 
-        RetrofitClient.getApiService().login(request).enqueue(new Callback<ApiResponse>() {
+        RetrofitClient.getApiService().login(request).enqueue(new Callback<ApiResponseDTO>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+            public void onResponse(Call<ApiResponseDTO> call, Response<ApiResponseDTO> response) {
                 loginButton.setEnabled(true);
                 loginButton.setText("Login");
 
                 if (response.isSuccessful() && response.body() != null) {
-                    ApiResponse apiResponse = response.body();
-                    if (apiResponse.isSuccess()) {
+                    ApiResponseDTO apiResponseDTO = response.body();
+                    if (apiResponseDTO.isSuccess()) {
                         // Save token
-                        String token = (String) apiResponse.getData();
+                        String token = (String) apiResponseDTO.getData();
                         saveToken(token);
 
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(LoginActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, apiResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
@@ -98,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponseDTO> call, Throwable t) {
                 loginButton.setEnabled(true);
                 loginButton.setText("Login");
                 Toast.makeText(LoginActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();

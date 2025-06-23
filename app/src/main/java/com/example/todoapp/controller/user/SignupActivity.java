@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.todoapp.R;
 import com.example.todoapp.api.RetrofitClient;
-import com.example.todoapp.model.ApiResponse;
-import com.example.todoapp.model.SignupRequest;
+import com.example.todoapp.model.ApiResponseDTO;
+import com.example.todoapp.model.SignupRequestDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,24 +75,24 @@ public class SignupActivity extends AppCompatActivity {
         signupButton.setEnabled(false);
         signupButton.setText("Signing up...");
 
-        SignupRequest request = new SignupRequest(username, email, password);
+        SignupRequestDTO request = new SignupRequestDTO(username, email, password);
 
-        RetrofitClient.getApiService().signup(request).enqueue(new Callback<ApiResponse>() {
+        RetrofitClient.getApiService().signup(request).enqueue(new Callback<ApiResponseDTO>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+            public void onResponse(Call<ApiResponseDTO> call, Response<ApiResponseDTO> response) {
                 signupButton.setEnabled(true);
                 signupButton.setText("Sign Up");
 
                 if (response.isSuccessful() && response.body() != null) {
-                    ApiResponse apiResponse = response.body();
-                    if (apiResponse.isSuccess()) {
+                    ApiResponseDTO apiResponseDTO = response.body();
+                    if (apiResponseDTO.isSuccess()) {
                         Toast.makeText(SignupActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(SignupActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, apiResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(SignupActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
@@ -100,7 +100,7 @@ public class SignupActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponseDTO> call, Throwable t) {
                 signupButton.setEnabled(true);
                 signupButton.setText("Sign Up");
                 Toast.makeText(SignupActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();

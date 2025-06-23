@@ -1,9 +1,9 @@
 package com.example.todoapp.model;
 
-public class ForgotPasswordRequest {
+public class ForgotPasswordRequestDTO {
     private String email;
 
-    public ForgotPasswordRequest(String email) {
+    public ForgotPasswordRequestDTO(String email) {
         this.email = email;
     }
 

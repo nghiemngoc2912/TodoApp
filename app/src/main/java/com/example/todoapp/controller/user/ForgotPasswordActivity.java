@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.todoapp.R;
 import com.example.todoapp.api.RetrofitClient;
-import com.example.todoapp.model.ApiResponse;
-import com.example.todoapp.model.ForgotPasswordRequest;
+import com.example.todoapp.model.ApiResponseDTO;
+import com.example.todoapp.model.ForgotPasswordRequestDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,24 +54,24 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         sendOtpButton.setEnabled(false);
         sendOtpButton.setText("Sending...");
 
-        ForgotPasswordRequest request = new ForgotPasswordRequest(email);
+        ForgotPasswordRequestDTO request = new ForgotPasswordRequestDTO(email);
 
-        RetrofitClient.getApiService().forgotPassword(request).enqueue(new Callback<ApiResponse>() {
+        RetrofitClient.getApiService().forgotPassword(request).enqueue(new Callback<ApiResponseDTO>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+            public void onResponse(Call<ApiResponseDTO> call, Response<ApiResponseDTO> response) {
                 sendOtpButton.setEnabled(true);
                 sendOtpButton.setText("Send OTP");
 
                 if (response.isSuccessful() && response.body() != null) {
-                    ApiResponse apiResponse = response.body();
-                    if (apiResponse.isSuccess()) {
+                    ApiResponseDTO apiResponseDTO = response.body();
+                    if (apiResponseDTO.isSuccess()) {
                         Toast.makeText(ForgotPasswordActivity.this, "OTP sent to your email", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(ForgotPasswordActivity.this, VerifyOtpActivity.class);
                         intent.putExtra("email", email);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(ForgotPasswordActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ForgotPasswordActivity.this, apiResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(ForgotPasswordActivity.this, "Failed to send OTP", Toast.LENGTH_SHORT).show();
@@ -79,7 +79,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponseDTO> call, Throwable t) {
                 sendOtpButton.setEnabled(true);
                 sendOtpButton.setText("Send OTP");
                 Toast.makeText(ForgotPasswordActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();

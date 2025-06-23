@@ -10,8 +10,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.todoapp.R;
 import com.example.todoapp.api.RetrofitClient;
-import com.example.todoapp.model.ApiResponse;
-import com.example.todoapp.model.VerifyOTPRequest;
+import com.example.todoapp.model.ApiResponseDTO;
+import com.example.todoapp.model.VerifyOTPRequestDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -93,17 +93,17 @@ public class VerifyOtpActivity extends AppCompatActivity {
         verifyOtpButton.setEnabled(false);
         verifyOtpButton.setText("Verifying...");
 
-        VerifyOTPRequest request = new VerifyOTPRequest(email, otp);
+        VerifyOTPRequestDTO request = new VerifyOTPRequestDTO(email, otp);
 
-        RetrofitClient.getApiService().verifyOTP(request).enqueue(new Callback<ApiResponse>() {
+        RetrofitClient.getApiService().verifyOTP(request).enqueue(new Callback<ApiResponseDTO>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+            public void onResponse(Call<ApiResponseDTO> call, Response<ApiResponseDTO> response) {
                 verifyOtpButton.setEnabled(true);
                 verifyOtpButton.setText("Verify OTP");
 
                 if (response.isSuccessful() && response.body() != null) {
-                    ApiResponse apiResponse = response.body();
-                    if (apiResponse.isSuccess()) {
+                    ApiResponseDTO apiResponseDTO = response.body();
+                    if (apiResponseDTO.isSuccess()) {
                         Toast.makeText(VerifyOtpActivity.this, "OTP verified successfully", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(VerifyOtpActivity.this, ResetPasswordActivity.class);
@@ -112,7 +112,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(VerifyOtpActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VerifyOtpActivity.this, apiResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(VerifyOtpActivity.this, "OTP verification failed", Toast.LENGTH_SHORT).show();
@@ -120,7 +120,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponseDTO> call, Throwable t) {
                 verifyOtpButton.setEnabled(true);
                 verifyOtpButton.setText("Verify OTP");
                 Toast.makeText(VerifyOtpActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();

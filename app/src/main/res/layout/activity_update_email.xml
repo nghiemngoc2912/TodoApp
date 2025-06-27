@@ -29,28 +29,28 @@
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <TextView
-        android:id="@+id/usernameLb"
+        android:id="@+id/passwordLb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginTop="52dp"
-        android:text="Username"
+        android:text="Password"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        app:layout_constraintTop_toBottomOf="@+id/title"  />
 
-    <TextView
-        android:id="@+id/username"
+    <EditText
+        android:id="@+id/password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:layout_marginRight="32dp"
         android:background="@drawable/border_bg"
-        android:text="ngocnthhe186888"
+        android:inputType="textPassword"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/usernameLb"
-        app:layout_constraintTop_toBottomOf="@id/usernameLb" />
+        app:layout_constraintStart_toStartOf="@id/passwordLb"
+        app:layout_constraintTop_toBottomOf="@id/passwordLb" />
 
     <TextView
         android:id="@+id/emailLb"
@@ -59,8 +59,8 @@
         android:layout_marginTop="16dp"
         android:text="Email"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@id/username"
-        app:layout_constraintTop_toBottomOf="@id/username" />
+        app:layout_constraintStart_toStartOf="@id/password"
+        app:layout_constraintTop_toBottomOf="@id/password" />
 
     <TextView
         android:id="@+id/email"

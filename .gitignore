@@ -1,5 +1,7 @@
 *.iml
 .gradle
+gradle/
+.gradle/
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -13,3 +15,12 @@
 .externalNativeBuild
 .cxx
 local.properties
+# Ignore Gradle files
+**/build/
+.gradle/caches/
+
+# Android Studio
+.idea/
+
+# OS & Misc
+*.log

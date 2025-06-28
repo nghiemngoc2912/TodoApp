@@ -14,11 +14,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.todoapp.controller.user.GetProfileActivity;
 import com.example.todoapp.controller.user.LoginActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private TextView welcomeText;
     private Button logoutButton;
+    protected BottomNavigationView bottomNav;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +31,32 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
         setupClickListeners();
+        setupBottomNavigation();
     }
+    protected void setupBottomNavigation() {
+        bottomNav = findViewById(R.id.bottom_nav);
+        if (bottomNav == null) return;
 
+        bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+//            if (id == R.id.nav_task) {
+//                if (!(this instanceof ))
+//                    startActivity(new Intent(this, TaskActivity.class));
+//                return true;
+//            } else if (id == R.id.nav_tracking) {
+//                if (!(this instanceof TrackingActivity))
+//                    startActivity(new Intent(this, TrackingActivity.class));
+//                return true;
+//            } else
+            if (id == R.id.nav_profile) {
+                if (!getClass().equals(GetProfileActivity.class)) {
+                    startActivity(new Intent(this, GetProfileActivity.class));
+                }
+                return true;
+            }
+            return false;
+        });
+    }
     private void initViews() {
         welcomeText = findViewById(R.id.welcome_text);
         logoutButton = findViewById(R.id.logout_button);

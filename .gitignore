@@ -1,7 +1,15 @@
 *.iml
 .gradle
+# Ignore Gradle wrapper & cache, nhưng giữ script và libs
+!gradle/libs.versions.toml
+!gradle/**/*.gradle.kts
+!gradle/**/*.gradle
+gradle/caches/
+.gradle/
 gradle/
 .gradle/
+**/*.jar
+**/*.dll
 /local.properties
 /.idea/caches
 /.idea/libraries

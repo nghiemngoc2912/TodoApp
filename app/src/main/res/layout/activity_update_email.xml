@@ -62,7 +62,7 @@
         app:layout_constraintStart_toStartOf="@id/password"
         app:layout_constraintTop_toBottomOf="@id/password" />
 
-    <TextView
+    <EditText
         android:id="@+id/email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -75,6 +75,15 @@
         app:layout_constraintStart_toStartOf="@id/emailLb"
         app:layout_constraintTop_toBottomOf="@id/emailLb" />
 
+    <TextView
+        android:id="@+id/textError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
+
     <Button
         android:id="@+id/buttonUpdateEmail"
         android:layout_width="wrap_content"
@@ -83,12 +92,17 @@
         android:text="Update Email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintTop_toBottomOf="@+id/textError" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="top"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="visible"
+        android:text=""
+        android:padding="8dp"
+        android:textSize="14sp"
         app:constraint_referenced_ids="buttonUpdateEmail" />
 </androidx.constraintlayout.widget.ConstraintLayout>

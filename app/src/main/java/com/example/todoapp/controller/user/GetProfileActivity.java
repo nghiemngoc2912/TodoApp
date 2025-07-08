@@ -52,13 +52,13 @@ public class GetProfileActivity extends AppCompatActivity {
                     username.setText(profile.getUsername());
                     email.setText(profile.getEmail());
                 } else {
-                    Toast.makeText(GetProfileActivity.this, "Không thể lấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GetProfileActivity.this, "Cannot get the user's profile", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<UserProfileResponseDTO> call, Throwable t) {
-                Toast.makeText(GetProfileActivity.this, "Lỗi mạng: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(GetProfileActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

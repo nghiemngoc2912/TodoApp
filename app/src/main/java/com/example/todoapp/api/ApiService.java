@@ -34,7 +34,7 @@ public interface ApiService {
     @GET("api/users/profile")
     Call<UserProfileResponseDTO> getProfile(@Header("Authorization") String token);
     @POST("api/users/change-email")
-    Call<ApiResponseDTO> changeEmail(@Body ChangeEmailRequestDTO request);
+    Call<String> changeEmail(@Header("Authorization") String token,@Body ChangeEmailRequestDTO request);
     @POST("api/users/change-password")
-    Call<ApiResponseDTO> changePassword(@Body ChangePasswordRequestDTO request);
+    Call<String> changePassword(@Header("Authorization") String token,@Body ChangePasswordRequestDTO request);
 }

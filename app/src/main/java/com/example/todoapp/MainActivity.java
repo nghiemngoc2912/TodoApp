@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.todoapp.controller.user.GetProfileActivity;
 import com.example.todoapp.controller.user.LoginActivity;
+import com.example.todoapp.controller.user.TaskTrackingActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,15 +40,14 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-//            if (id == R.id.nav_task) {
-//                if (!(this instanceof ))
-//                    startActivity(new Intent(this, TaskActivity.class));
-//                return true;
-//            } else if (id == R.id.nav_tracking) {
-//                if (!(this instanceof TrackingActivity))
-//                    startActivity(new Intent(this, TrackingActivity.class));
-//                return true;
-//            } else
+            if (id == R.id.nav_task) {
+                if (!(this instanceof MainActivity))
+                    startActivity(new Intent(this, MainActivity.class));
+                return true;
+            } else if (id == R.id.nav_tracking) {
+                    startActivity(new Intent(this, TaskTrackingActivity.class));
+                return true;
+            } else
             if (id == R.id.nav_profile) {
                 if (!getClass().equals(GetProfileActivity.class)) {
                     startActivity(new Intent(this, GetProfileActivity.class));

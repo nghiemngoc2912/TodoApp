@@ -49,6 +49,9 @@
         <activity
             android:name=".controller.user.ChangeEmailActivity"
             android:exported="false" />
+        <activity
+            android:name=".controller.user.TaskTrackingActivity"
+            android:exported="false" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

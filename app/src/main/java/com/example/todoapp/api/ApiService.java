@@ -7,14 +7,21 @@ import com.example.todoapp.model.ForgotPasswordRequestDTO;
 import com.example.todoapp.model.LoginRequestDTO;
 import com.example.todoapp.model.ResetPasswordRequestDTO;
 import com.example.todoapp.model.SignupRequestDTO;
+import com.example.todoapp.model.TaskResponseDTO;
+import com.example.todoapp.model.TaskUpdateRequestDTO;
 import com.example.todoapp.model.UserProfileResponseDTO;
 import com.example.todoapp.model.VerifyOTPRequestDTO;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface ApiService {
     @POST("api/auth/login")
@@ -37,4 +44,22 @@ public interface ApiService {
     Call<String> changeEmail(@Header("Authorization") String token,@Body ChangeEmailRequestDTO request);
     @POST("api/users/change-password")
     Call<String> changePassword(@Header("Authorization") String token,@Body ChangePasswordRequestDTO request);
+
+    @GET("api/task/alltasks")
+    Call<List<TaskResponseDTO>> getAllTasks(@Header("Authorization") String token);
+
+    @GET("api/task/{id}")
+    Call<TaskResponseDTO> getTaskById(@Header("Authorization") String token,
+                                      @Path("id") int id);
+    @POST("api/task/createnew")
+    Call<String> createTask(@Header("Authorization") String token,
+                            @Body TaskUpdateRequestDTO newTask);
+    @PUT("api/task/{id}")
+    Call<String> updateTask(@Header("Authorization") String token,
+                            @Path("id") int id,
+                            @Body TaskUpdateRequestDTO task);
+    @DELETE("api/task/{id}")
+    Call<String> deleteTask(@Header("Authorization") String token,
+                            @Path("id") int id);
+
 }

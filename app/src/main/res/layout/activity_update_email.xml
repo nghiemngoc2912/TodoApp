@@ -69,7 +69,7 @@
         android:layout_marginTop="6dp"
         android:layout_marginRight="32dp"
         android:background="@drawable/border_bg"
-        android:text="ngocnthhe186888@fpt.edu.vn"
+        android:text=""
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/emailLb"

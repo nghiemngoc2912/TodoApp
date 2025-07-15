@@ -9,6 +9,8 @@ import com.example.todoapp.model.ResetPasswordRequestDTO;
 import com.example.todoapp.model.SignupRequestDTO;
 import com.example.todoapp.model.TaskResponseDTO;
 import com.example.todoapp.model.TaskUpdateRequestDTO;
+import com.example.todoapp.model.TaskCountByDate;
+import com.example.todoapp.model.TaskStartedCountByDateDTO;
 import com.example.todoapp.model.UserProfileResponseDTO;
 import com.example.todoapp.model.VerifyOTPRequestDTO;
 
@@ -22,6 +24,8 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
     @POST("api/auth/login")
@@ -44,6 +48,20 @@ public interface ApiService {
     Call<String> changeEmail(@Header("Authorization") String token,@Body ChangeEmailRequestDTO request);
     @POST("api/users/change-password")
     Call<String> changePassword(@Header("Authorization") String token,@Body ChangePasswordRequestDTO request);
+    @GET("api/task/count-completed-task")
+    Call<Integer> countCompletedTask(@Header("Authorization") String token);
+
+    @GET("api/task/count-open-task")
+    Call<Integer> countOpenTask(@Header("Authorization") String token);
+
+    @GET("api/task/count-by-date/{date}")
+    Call<TaskCountByDate> countTaskByDate(@Header("Authorization") String token,@Path("date") String date);
+
+    @GET("api/task/tasks-daily-status")
+    Call<List<TaskCountByDate>> getDailyStatus(@Header("Authorization") String token,@Query("days") int days);
+
+    @GET("api/task/tasks-created-daily")
+    Call<List<TaskStartedCountByDateDTO>> getTasksCreatedDaily(@Header("Authorization") String token,@Query("days") int days);
 
     @GET("api/task/alltasks")
     Call<List<TaskResponseDTO>> getAllTasks(@Header("Authorization") String token);

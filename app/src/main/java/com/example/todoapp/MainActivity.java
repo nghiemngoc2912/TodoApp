@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.todoapp.controller.task.TaskList;
 import com.example.todoapp.controller.user.GetProfileActivity;
 import com.example.todoapp.controller.user.LoginActivity;
 import com.example.todoapp.controller.user.TaskTrackingActivity;
@@ -41,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_task) {
-                if (!(this instanceof MainActivity))
-                    startActivity(new Intent(this, MainActivity.class));
+                    startActivity(new Intent(this, TaskList.class));
                 return true;
             } else if (id == R.id.nav_tracking) {
                     startActivity(new Intent(this, TaskTrackingActivity.class));

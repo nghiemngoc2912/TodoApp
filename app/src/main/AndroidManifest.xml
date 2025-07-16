@@ -65,7 +65,7 @@
             android:name=".controller.user.ChangeEmailActivity"
             android:exported="false" />
         <activity
-            android:name=".controller.user.TaskTrackingActivity"
+            android:name=".controller.task.TaskTrackingActivity"
             android:exported="false" />
     </application>
 

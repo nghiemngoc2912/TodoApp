@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.todoapp.R;
 import com.example.todoapp.api.ApiService;
 import com.example.todoapp.api.RetrofitClient;
+import com.example.todoapp.controller.BaseMenuBottomActivity;
 import com.example.todoapp.model.ApiResponseDTO;
 import com.example.todoapp.model.ChangeEmailRequestDTO;
 import com.example.todoapp.model.ChangePasswordRequestDTO;
@@ -19,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChangePasswordActivity extends AppCompatActivity {
+public class ChangePasswordActivity extends BaseMenuBottomActivity {
     TextView oldPassword,newPassword,confirmPassword;
     Button changePassword;
     @Override

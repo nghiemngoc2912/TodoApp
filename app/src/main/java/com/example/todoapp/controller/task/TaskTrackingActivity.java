@@ -1,18 +1,17 @@
-package com.example.todoapp.controller.user;
+package com.example.todoapp.controller.task;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.todoapp.R;
 import com.example.todoapp.api.ApiService;
 import com.example.todoapp.api.RetrofitClient;
+import com.example.todoapp.controller.BaseMenuBottomActivity;
+import com.example.todoapp.controller.user.LoginActivity;
 import com.example.todoapp.model.TaskCountByDate;
 import com.example.todoapp.model.TaskStartedCountByDateDTO;
 import com.github.mikephil.charting.charts.BarChart;
@@ -27,18 +26,14 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TaskTrackingActivity extends AppCompatActivity {
+public class TaskTrackingActivity extends BaseMenuBottomActivity {
 
     TextView tvCompletedTasks, tvOpenTasks;
     BarChart barChartTaskStarted;

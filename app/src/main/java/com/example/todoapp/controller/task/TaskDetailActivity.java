@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.todoapp.R;
 import com.example.todoapp.api.ApiService;
 import com.example.todoapp.api.RetrofitClient;
+import com.example.todoapp.controller.BaseMenuBottomActivity;
 import com.example.todoapp.databinding.ActivityTaskDetailBinding;
 import com.example.todoapp.model.TaskResponseDTO;
 
@@ -20,7 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TaskDetailActivity extends AppCompatActivity {
+public class TaskDetailActivity extends BaseMenuBottomActivity {
 
     private ActivityTaskDetailBinding binding;
     private TaskResponseDTO task;

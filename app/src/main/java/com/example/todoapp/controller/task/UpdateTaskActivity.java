@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.todoapp.R;
 import com.example.todoapp.api.ApiService;
 import com.example.todoapp.api.RetrofitClient;
+import com.example.todoapp.controller.BaseMenuBottomActivity;
 import com.example.todoapp.controller.user.GetProfileActivity;
 import com.example.todoapp.databinding.ActivityUpdateTaskBinding;
 import com.example.todoapp.enumconstant.Priority;
@@ -33,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UpdateTaskActivity extends AppCompatActivity {
+public class UpdateTaskActivity extends BaseMenuBottomActivity {
 
     private ActivityUpdateTaskBinding binding;
     private ApiService api;

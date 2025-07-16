@@ -90,32 +90,40 @@ public class TaskTrackingActivity extends BaseMenuBottomActivity {
         api.getDailyStatus("Bearer " + token, 7).enqueue(new Callback<List<TaskCountByDate>>() {
             @Override
             public void onResponse(Call<List<TaskCountByDate>> call, Response<List<TaskCountByDate>> response) {
+                if (!response.isSuccessful() || response.body() == null) {
+                    Log.e("API", "Response failed or body is null");
+                    return;
+                }
+
+                List<TaskCountByDate> data = response.body();
+
+                if (data.isEmpty()) {
+                    Log.w("API", "No task data returned");
+                    return;
+                }
+
                 List<Entry> completedEntries = new ArrayList<>();
                 List<Entry> openEntries = new ArrayList<>();
                 List<String> labels = new ArrayList<>();
 
-                if (response.isSuccessful() && response.body() != null) {
-                    int i = 0;
-                    for (TaskCountByDate d : response.body()) {
-                        labels.add(d.getDate().toString()); // ví dụ: "2024-07-11"
-                        completedEntries.add(new Entry(i, d.getDoneCount()));
-                        openEntries.add(new Entry(i, d.getInProgressCount()));
-                        i++;
-                    }
-                } else {
-                    Log.e("API", "Response failed or empty");
-                    return;
+                int i = 0;
+                for (TaskCountByDate d : data) {
+                    labels.add(d.getDate());
+                    completedEntries.add(new Entry(i, d.getDoneCount()));
+                    openEntries.add(new Entry(i, d.getInProgressCount()));
+                    i++;
                 }
 
+                // Chart setup...
                 LineDataSet completedSet = new LineDataSet(completedEntries, "Completed");
-                completedSet.setColor(Color.parseColor("#4CAF50")); // xanh lá
+                completedSet.setColor(Color.parseColor("#4CAF50"));
                 completedSet.setCircleColor(Color.parseColor("#4CAF50"));
                 completedSet.setLineWidth(2f);
                 completedSet.setCircleRadius(4f);
                 completedSet.setDrawValues(true);
 
                 LineDataSet openSet = new LineDataSet(openEntries, "Open");
-                openSet.setColor(Color.parseColor("#F44336")); // đỏ
+                openSet.setColor(Color.parseColor("#F44336"));
                 openSet.setCircleColor(Color.parseColor("#F44336"));
                 openSet.setLineWidth(2f);
                 openSet.setCircleRadius(4f);
@@ -124,27 +132,25 @@ public class TaskTrackingActivity extends BaseMenuBottomActivity {
                 LineData lineData = new LineData(completedSet, openSet);
                 lineChartDailyStatus.setData(lineData);
 
-                // XAxis
                 XAxis xAxis = lineChartDailyStatus.getXAxis();
                 xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
                 xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                 xAxis.setGranularity(1f);
                 xAxis.setDrawGridLines(false);
-                xAxis.setLabelRotationAngle(-45f); // xoay ngày cho đỡ chồng
+                xAxis.setLabelRotationAngle(-45f);
 
-                // YAxis
                 YAxis leftAxis = lineChartDailyStatus.getAxisLeft();
                 leftAxis.setDrawGridLines(true);
                 leftAxis.setAxisMinimum(0f);
                 lineChartDailyStatus.getAxisRight().setEnabled(false);
 
-                // Chart
                 lineChartDailyStatus.getDescription().setEnabled(false);
                 lineChartDailyStatus.getLegend().setEnabled(true);
                 lineChartDailyStatus.animateY(1000);
                 lineChartDailyStatus.invalidate();
                 lineChartDailyStatus.setExtraOffsets(0f, 0f, 0f, 32f);
             }
+
 
             @Override
             public void onFailure(Call<List<TaskCountByDate>> call, Throwable t) {

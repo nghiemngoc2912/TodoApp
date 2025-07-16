@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.todoapp.R;
 import com.example.todoapp.api.ApiService;
 import com.example.todoapp.api.RetrofitClient;
+import com.example.todoapp.controller.BaseMenuBottomActivity;
 import com.example.todoapp.enumconstant.Status;
 import com.example.todoapp.model.TaskResponseDTO;
 import com.example.todoapp.model.TaskUpdateRequestDTO;
@@ -41,7 +42,7 @@ import java.util.stream.Collectors;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-public class TaskList extends AppCompatActivity {
+public class TaskList extends BaseMenuBottomActivity {
 
     /* ---------- view & adapter ---------- */
     private RecyclerView rvSections;

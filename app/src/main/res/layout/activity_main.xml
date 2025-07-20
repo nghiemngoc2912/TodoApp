@@ -1,26 +1,25 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     android:background="@drawable/background"
     tools:context=".MainActivity">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
         app:cardCornerRadius="30dp"
-        app:cardElevation="20dp">
+        app:cardElevation="20dp"
+        android:layout_centerInParent="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_gravity="center_horizontal"
             android:padding="40dp"
             android:background="@drawable/custom_edittext">
 
@@ -52,7 +51,6 @@
                 android:textSize="18sp"
                 android:backgroundTint="@color/primary"
                 app:cornerRadius="20dp"/>
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -60,8 +58,8 @@
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
         android:background="?android:attr/windowBackground"
         app:menu="@menu/bottom_nav_menu" />
 
-</LinearLayout>
+</RelativeLayout>

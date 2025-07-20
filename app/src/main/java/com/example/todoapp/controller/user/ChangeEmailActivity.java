@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.todoapp.R;
 import com.example.todoapp.api.ApiService;
 import com.example.todoapp.api.RetrofitClient;
+import com.example.todoapp.controller.BaseMenuBottomActivity;
 import com.example.todoapp.model.ApiResponseDTO;
 import com.example.todoapp.model.ChangeEmailRequestDTO;
 
@@ -18,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChangeEmailActivity extends AppCompatActivity {
+public class ChangeEmailActivity extends BaseMenuBottomActivity {
     TextView password,email;
     Button changeEmail;
     @Override

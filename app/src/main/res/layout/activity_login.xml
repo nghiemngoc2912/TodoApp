@@ -42,53 +42,46 @@
                     android:layout_marginBottom="24dp" />
 
                 <!-- Email -->
+                <!-- Email -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/email_input_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:boxStrokeColor="@color/primary"
-                    app:errorEnabled="true"
-                    app:startIconDrawable="@drawable/baseline_person_24"
-                    app:startIconTint="@color/primary">
+                    app:boxStrokeColor="@color/primary">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/login_email"
+                        android:id="@+id/email_input_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Email"
                         android:inputType="textEmailAddress"
+                        android:drawableStart="@drawable/baseline_person_24"
+                        android:drawablePadding="8dp"
                         android:textColorHint="@color/primary"
                         android:textColor="@color/black"
-                        android:padding="12dp"
-                        android:maxLines="1"
-                        android:imeOptions="actionNext" />
+                        android:padding="12dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Password -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/password_input_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     app:boxStrokeColor="@color/primary"
-                    app:endIconMode="password_toggle"
-                    app:errorEnabled="true"
-                    app:startIconDrawable="@drawable/baseline_lock_24"
-                    app:startIconTint="@color/primary">
+                    app:endIconMode="password_toggle">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/login_password"
+                        android:id="@+id/password_input_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Password"
                         android:inputType="textPassword"
+                        android:drawableStart="@drawable/baseline_lock_24"
+                        android:drawablePadding="8dp"
                         android:textColorHint="@color/primary"
                         android:textColor="@color/black"
-                        android:padding="12dp"
-                        android:maxLines="1"
-                        android:imeOptions="actionDone" />
+                        android:padding="12dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Login Button -->

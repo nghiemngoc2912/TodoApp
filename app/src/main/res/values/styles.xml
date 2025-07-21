@@ -9,6 +9,13 @@
         <item name="android:maxLength">1</item>
         <item name="android:background">@drawable/custom_edittext</item>
     </style>
+    <style name="MyThemeTextViewForTitle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:fontFamily">@font/font1</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 
     <style name="BottomNavTextStyle" parent="TextAppearance.AppCompat.Caption">
         <item name="android:paddingTop">12dp</item>

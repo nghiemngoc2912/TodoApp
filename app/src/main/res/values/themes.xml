@@ -4,6 +4,7 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="colorPrimaryVariant">@color/primary</item>
+        <item name="android:fontFamily">@font/font1</item>
     </style>
 
     <style name="Theme.TodoApp" parent="Base.Theme.TodoApp" />

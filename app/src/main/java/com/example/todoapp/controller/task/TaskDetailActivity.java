@@ -17,6 +17,10 @@ import com.example.todoapp.controller.BaseMenuBottomActivity;
 import com.example.todoapp.databinding.ActivityTaskDetailBinding;
 import com.example.todoapp.model.TaskResponseDTO;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,6 +32,8 @@ public class TaskDetailActivity extends BaseMenuBottomActivity {
     private int taskId;
     private ApiService api;
     private String bearer;
+    private static final DateTimeFormatter OUTPUT_FMT =
+            DateTimeFormatter.ofPattern("dd MMM yyyy • HH:mm", Locale.getDefault());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +45,6 @@ public class TaskDetailActivity extends BaseMenuBottomActivity {
         bearer = "Bearer " + getSharedPreferences("auth", MODE_PRIVATE)
                 .getString("token", null);
 
-        // Nhận dữ liệu task từ Intent
         taskId = getIntent().getIntExtra("taskid", -1);
         if (taskId == -1) {
             Toast.makeText(this, "No task id!", Toast.LENGTH_SHORT).show();
@@ -49,16 +54,32 @@ public class TaskDetailActivity extends BaseMenuBottomActivity {
 
         loadTaskDetail();
 
-
-        // Xử lý xoá
-        binding.btnDelete.setOnClickListener(v -> deleteTask(task.getId()));
-
-        // Xử lý cập nhật
-        binding.btnUpdate.setOnClickListener(v -> {
-            Intent intent = new Intent(this, UpdateTaskActivity.class);
-            intent.putExtra("taskid", task.getId());
-            startActivity(intent);
+        // Confirm before delete
+        binding.btnDelete.setOnClickListener(v -> {
+            if (task != null) {
+                showConfirmDeleteDialog(task);
+            }
         });
+
+        binding.btnUpdate.setOnClickListener(v -> {
+            if (task != null) {
+                Intent intent = new Intent(this, UpdateTaskActivity.class);
+                intent.putExtra("taskid", task.getId());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void showConfirmDeleteDialog(TaskResponseDTO task) {
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.confirm_delete_title)
+                .setMessage(getString(R.string.confirm_delete_message, task.getTitle()))
+                .setPositiveButton(R.string.delete, (dialog, which) -> {
+                    dialog.dismiss();
+                    deleteTask(task.getId());
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     private void loadTaskDetail() {
@@ -84,37 +105,44 @@ public class TaskDetailActivity extends BaseMenuBottomActivity {
         });
     }
 
-
     private void displayTaskInfo() {
-                binding.tvTitle.setText(task.getTitle());
-                binding.tvDescription.setText(task.getDescription());
-                binding.tvTime.setText("Time: " + task.getStartTime());
-                binding.tvPriority.setText("Priority: " + task.getPriority().name());
-            }
+        binding.tvTitle.setText(task.getTitle());
+        binding.tvDescription.setText(task.getDescription());
 
-            private void deleteTask(int taskId) {
-                api.deleteTask(bearer, taskId).enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.isSuccessful()) {
-                            Toast.makeText(TaskDetailActivity.this, "Task deleted", Toast.LENGTH_SHORT).show();
-                            finish(); // Quay về màn trước
-                        } else {
-                            Toast.makeText(TaskDetailActivity.this, "Delete failed: " + response.code(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
+        // Format time (ISO -> nice)
+        try {
+            binding.tvTime.setText(LocalDateTime.parse(task.getStartTime()).format(OUTPUT_FMT));
+        } catch (Exception e) {
+            binding.tvTime.setText(task.getStartTime()); // fallback raw
+        }
 
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Toast.makeText(TaskDetailActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        binding.tvPriority.setText("Priority: " + task.getPriority().name());
+    }
+
+    private void deleteTask(int taskId) {
+        api.deleteTask(bearer, taskId).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(TaskDetailActivity.this, "Task deleted", Toast.LENGTH_SHORT).show();
+                    setResult(RESULT_OK); // để màn trước refresh nếu muốn
+                    finish();
+                } else {
+                    Toast.makeText(TaskDetailActivity.this,
+                            "Delete failed: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
             }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(TaskDetailActivity.this,
+                        "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadTaskDetail();   // gọi lại mỗi khi Activity “trở lại”
+        loadTaskDetail();
     }
-
 }

@@ -8,7 +8,10 @@
         android:id="@+id/tvHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
+        android:text="test"
+        android:fontFamily="@font/font1"
+        android:textSize="12sp"
+        android:textColor="#949292"
         android:padding="8dp"
         android:textAppearance="@style/TextAppearance.Material3.TitleMedium"/>
 

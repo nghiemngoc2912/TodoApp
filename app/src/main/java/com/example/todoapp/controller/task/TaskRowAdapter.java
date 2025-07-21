@@ -1,5 +1,7 @@
 package com.example.todoapp.controller.task;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -83,15 +85,15 @@ public class TaskRowAdapter
         }
         b.tvTime.setText(timeStr);
 
-        h.b.cbDone.setOnCheckedChangeListener((btn,ck)->{
+        b.cbDone.setOnCheckedChangeListener((btn,ck)->{
             if(btn.isPressed()) listener.onToggle(t,ck);
         });
-
-        h.b.getRoot().setOnClickListener(v -> {
-            boolean newChecked = !b.cbDone.isChecked();
-            b.cbDone.setChecked(newChecked);          // update UI
-            listener.onToggle(t, newChecked);         // callback lên Activity
+        b.tvTitle.setOnClickListener(v -> {
+            Context context = v.getContext();
+            Intent intent = new Intent(context, TaskDetailActivity.class);
+            intent.putExtra("taskid", t.getId());
+            context.startActivity(intent);
         });
-       // h.b.getRoot().setOnClickListener(v-> listener.onClick(t));
+
     }
 }

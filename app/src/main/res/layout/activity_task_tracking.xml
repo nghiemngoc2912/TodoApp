@@ -16,8 +16,7 @@
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Đường kẻ dưới tiêu đề -->
     <View
@@ -32,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- ScrollView chứa toàn bộ nội dung -->
+    <!-- ScrollView -->
     <ScrollView
         android:id="@+id/scrollViewContent"
         android:layout_width="0dp"
@@ -41,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@id/titleDivider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav">
 
         <LinearLayout
             android:orientation="vertical"
@@ -81,7 +80,7 @@
                     android:textStyle="bold"/>
             </LinearLayout>
 
-            <!-- Bar chart: Daily task complete & open -->
+            <!-- Line chart -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -92,10 +91,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:layout_marginBottom="24dp"
-                android:paddingBottom="16dp"
-                />
+                android:paddingBottom="16dp" />
 
-            <!-- Bar chart: Daily task started -->
+            <!-- Bar chart -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,15 +104,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:paddingBottom="16dp" />
-
         </LinearLayout>
     </ScrollView>
 
+    <!-- Bottom Navigation View -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollViewContent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -119,15 +119,15 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- ===== Action buttons fixed bottom ===== -->
+    <!-- ===== Action buttons fixed above bottom nav ===== -->
     <LinearLayout
         android:id="@+id/actionsGroup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -155,5 +155,15 @@
             android:textColor="@android:color/white"
             android:backgroundTint="@color/primary" />
     </LinearLayout>
+
+    <!-- ===== Bottom Navigation ===== -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_nav_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

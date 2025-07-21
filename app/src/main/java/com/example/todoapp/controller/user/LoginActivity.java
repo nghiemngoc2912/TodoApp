@@ -1,9 +1,5 @@
 package com.example.todoapp.controller.user;
 
-import com.google.android.gms.auth.api.signin.*;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,15 +7,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.todoapp.MainActivity;
 import com.example.todoapp.R;
 import com.example.todoapp.api.RetrofitClient;
+import com.example.todoapp.controller.task.TaskList;
 import com.example.todoapp.model.ApiResponseDTO;
 import com.example.todoapp.model.LoginRequestDTO;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.FirebaseUser;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,19 +36,39 @@ public class LoginActivity extends AppCompatActivity {
     private EditText loginEmail, loginPassword;
     private Button loginButton;
     private TextView forgotPassword, signUpRedirectText;
+    private SignInButton googleSignInButton;
 
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
-    private SignInButton googleSignInButton;
-
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mAuth = FirebaseAuth.getInstance();
+
         initViews();
         setupClickListeners();
+    }
+
+    private GoogleSignInClient googleSignInClient;
+
+    private void setupGoogleSignIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.client_id))
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        // Xóa quyền truy cập trước đó để đảm bảo hiển thị chọn tài khoản
+        googleSignInClient.revokeAccess().addOnCompleteListener(this, task -> {
+            // Sau khi xóa quyền truy cập, thực hiện đăng nhập
+            Intent signInIntent = googleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        });
     }
 
     private void initViews() {
@@ -51,40 +78,35 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword = findViewById(R.id.forgot_password);
         signUpRedirectText = findViewById(R.id.signUpRedirectText);
         googleSignInButton = findViewById(R.id.google_sign_in_button);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.client_id)) // lấy từ google-services.json
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
     private void setupClickListeners() {
         loginButton.setOnClickListener(v -> performLogin());
 
         forgotPassword.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
         });
 
         signUpRedirectText.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(LoginActivity.this, SignupActivity.class));
         });
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("851523434010-tb9lfq1dimfvbuduapqgk9r7ct9nul65.apps.googleusercontent.com") // lấy từ Google Console
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        googleSignInButton.setOnClickListener(v -> {
-            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            startActivityForResult(signInIntent, RC_SIGN_IN);
-        });
+        googleSignInButton.setOnClickListener(v -> setupGoogleSignIn());
 
     }
 
     private void performLogin() {
-        String username = loginEmail.getText().toString().trim();
+        String email = loginEmail.getText().toString().trim();
         String password = loginPassword.getText().toString().trim();
 
-        if (username.isEmpty() || password.isEmpty()) {
+        if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -92,32 +114,21 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setEnabled(false);
         loginButton.setText("Logging in...");
 
-        LoginRequestDTO request = new LoginRequestDTO(username, password);
-
+        LoginRequestDTO request = new LoginRequestDTO(email, password);
         RetrofitClient.getApiService().login(request).enqueue(new Callback<ApiResponseDTO>() {
             @Override
             public void onResponse(Call<ApiResponseDTO> call, Response<ApiResponseDTO> response) {
                 loginButton.setEnabled(true);
                 loginButton.setText("Login");
 
-                if (response.isSuccessful() && response.body() != null) {
-                    ApiResponseDTO apiResponseDTO = response.body();
-                    if (apiResponseDTO.isSuccess()) {
-                        // Save token
-                        String token = (String) apiResponseDTO.getData();
-                        saveToken(token);
-
-                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-
-                        // Navigate to main activity
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(LoginActivity.this, apiResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    String token = (String) response.body().getData();
+                    saveToken(token);
+                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(LoginActivity.this, TaskList.class));
+                    finish();
                 } else {
-                    Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Login failed: " + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -141,22 +152,38 @@ public class LoginActivity extends AppCompatActivity {
 
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleGoogleSignInResult(task);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                if (account != null) {
+                    firebaseAuthWithGoogle(account.getIdToken());
+                }
+            } catch (ApiException e) {
+                Toast.makeText(this, "Google sign in failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    private void handleGoogleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            if (account != null) {
-                String idToken = account.getIdToken();
-                sendIdTokenToBackend(idToken);
-            }
-
-        } catch (ApiException e) {
-            Toast.makeText(this, "Google sign in failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            firebaseUser.getIdToken(true)
+                                    .addOnCompleteListener(tokenTask -> {
+                                        if (tokenTask.isSuccessful()) {
+                                            String firebaseIdToken = tokenTask.getResult().getToken();
+                                            sendIdTokenToBackend(firebaseIdToken);
+                                        } else {
+                                            Toast.makeText(LoginActivity.this, "Token error", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Firebase Auth Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void sendIdTokenToBackend(String idToken) {
@@ -167,7 +194,7 @@ public class LoginActivity extends AppCompatActivity {
                     String token = (String) response.body().getData();
                     saveToken(token);
                     Toast.makeText(LoginActivity.this, "Google Login Success", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    startActivity(new Intent(LoginActivity.this, TaskList.class));
                     finish();
                 } else {
                     Toast.makeText(LoginActivity.this, "Google login failed: " + response.message(), Toast.LENGTH_SHORT).show();

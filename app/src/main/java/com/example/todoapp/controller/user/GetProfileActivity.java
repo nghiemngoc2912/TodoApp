@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.todoapp.MainActivity;
 import com.example.todoapp.R;
 import com.example.todoapp.api.ApiService;
 import com.example.todoapp.api.RetrofitClient;
@@ -21,7 +22,7 @@ import retrofit2.Response;
 
 public class GetProfileActivity extends BaseMenuBottomActivity {
     TextView username,email;
-    Button changeEmail,changePassword;
+    Button changeEmail,changePassword, logoutButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +74,7 @@ public class GetProfileActivity extends BaseMenuBottomActivity {
             Intent intent = new Intent(GetProfileActivity.this,ChangePasswordActivity.class);
             startActivity(intent);
         });
+        logoutButton.setOnClickListener(v -> logout());
     }
 
     private void initViews() {
@@ -80,5 +82,14 @@ public class GetProfileActivity extends BaseMenuBottomActivity {
         email=findViewById(R.id.email);
         changeEmail=findViewById(R.id.buttonChangeEmail);
         changePassword=findViewById(R.id.buttonChangePassword);
+        logoutButton = findViewById(R.id.logout_button);
+    }
+
+    private void logout() {
+        SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+        prefs.edit().remove("token").apply();
+        Intent intent = new Intent(GetProfileActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

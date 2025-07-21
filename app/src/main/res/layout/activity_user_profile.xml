@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:text="User Profile"
-        android:textSize="36sp"
+        android:theme="@style/MyThemeTextViewForTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
         android:layout_marginStart="44dp"
         android:layout_marginTop="52dp"
         android:text="Username"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
@@ -49,7 +49,7 @@
         android:layout_marginRight="32dp"
         android:background="@drawable/border_bg"
         android:text=""
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/usernameLb"
         app:layout_constraintTop_toBottomOf="@id/usernameLb" />
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Email"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@id/username"
         app:layout_constraintTop_toBottomOf="@id/username" />
 
@@ -72,7 +72,7 @@
         android:layout_marginRight="32dp"
         android:background="@drawable/border_bg"
         android:text=""
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/emailLb"
         app:layout_constraintTop_toBottomOf="@id/emailLb" />

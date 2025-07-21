@@ -31,6 +31,9 @@ public interface ApiService {
     @POST("api/auth/login")
     Call<ApiResponseDTO> login(@Body LoginRequestDTO request);
 
+    @POST("/api/auth/google")
+    Call<ApiResponseDTO> googleLogin(@Body LoginRequestDTO tokenRequest);
+
     @POST("api/auth/signup")
     Call<ApiResponseDTO> signup(@Body SignupRequestDTO request);
 

@@ -16,4 +16,9 @@
         <item name="android:textColor">@color/primary</item>
         <item name="android:textAlignment">center</item>
     </style>
+
+    <style name="BottomNavTextStyle" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>
